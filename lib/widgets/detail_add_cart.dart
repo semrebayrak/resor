@@ -44,6 +44,7 @@ class AddCart extends StatelessWidget {
                     loadedProduct.price.toString(),
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
+
                 ],
               ),
             ),
@@ -101,7 +102,8 @@ class AddCart extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+          
         ],
       ),
     );

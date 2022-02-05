@@ -6,92 +6,47 @@ import './product.dart';
 class Products with ChangeNotifier {
   List<Product> _items = [
     Product(
-        id: 'p1',
-        decs: 'No1. in Sales',
-        name: 'Chicken Cheese Burger',
-        imgUrl: 'https://i.hizliresim.com/fmg455u.png',
-        waitTime: '15min',
-        score: 4.8,
-        cal: '425',
-        price: 8,
-        quantity: 1,
-        about:
-            'A cheeseburger is a hamburger topped with cheese. heeseburger is a hamburger topped with cheese. Traditionally, the slice of cheese is placed on top of the meat paheeseburger is a hamburger topped with cheese.'),
-    Product(
-        id: 'p2',
-        decs: 'No1. in Sales',
-        name: 'Fries',
-        imgUrl: 'https://i.hizliresim.com/fmg455u.png',
-        waitTime: '15min',
-        score: 4.8,
-        cal: '425',
-        price: 8,
-        quantity: 1,
-        about:
-            'A 2cheeseburger is a hamburger topped with cheese.ssssssssssssssssssssssssssss Traditionally, the slice of cheese is placed on top of the meat patty. The cheese is usually added to the cooking hamburger patty shortly before serving, which allows the cheese to melt.'),
-    Product(
-        id: 'p3',
-        decs: 'No1. in Sales',
-        name: 'Spride',
-        imgUrl: 'https://i.hizliresim.com/fmg455u.png',
-        waitTime: '15min',
-        score: 4.8,
-        cal: '425',
-        price: 8,
-        quantity: 1,
-        about:
-            'A 3cheeseburger is a hamburger topped with cheese. Traditionally, the slice of cheese is placed on top of the meat patty. The cheese is usually added to the cooking hamburger patty shortly before serving, which allows the cheese to melt.'),
-    Product(
-        id: 'p7',
-        decs: 'No1. in Sales',
-        name: 'Chicken Cheese Burger',
-        imgUrl: 'https://i.hizliresim.com/fmg455u.png',
-        waitTime: '15min',
-        score: 4.8,
-        cal: '425',
-        price: 8,
-        quantity: 1,
-        about:
-            'A 4cheeseburger is a hamburger topped with cheese. Traditionally, the slice of cheese is placed on top of the meat patty. The cheese is usually added to the cooking hamburger patty shortly before serving, which allows the cheese to melt.'),
-    Product(
-        id: 'p4',
-        decs: 'No1. in Sales',
-        name: 'Chicken Cheese Burger',
-        imgUrl: 'https://i.hizliresim.com/fmg455u.png',
-        waitTime: '15min',
-        score: 4.8,
-        cal: '425',
-        price: 8,
-        quantity: 1,
-        about:
-            'A cheeseburger is a hamburger topped with cheese. Traditionally, the slice of cheese is placed on top of the meat patty. The cheese is usually added to the cooking hamburger patty shortly before serving, which allows the cheese to melt.'),
-    Product(
         id: 'p5',
         decs: 'No1. in Sales',
         name: 'Chicken Cheese Burger',
         imgUrl: 'https://i.hizliresim.com/fmg455u.png',
         waitTime: '15min',
-        score: 4.8,
-        cal: '425',
+       cal: '425',
         price: 8,
-        quantity: 1,
+        score: 4.3,
         about:
             'A cheeseburger is a hamburger topped with cheese. Traditionally, the slice of cheese is placed on top of the meat patty. The cheese is usually added to the cooking hamburger patty shortly before serving, which allows the cheese to melt.'),
-    Product(
-        id: 'p6',
+            Product(
+        id: 'p5',
         decs: 'No1. in Sales',
         name: 'Chicken Cheese Burger',
         imgUrl: 'https://i.hizliresim.com/fmg455u.png',
         waitTime: '15min',
-        score: 4.8,
-        cal: '425',
+       cal: '425',
         price: 8,
-        quantity: 1,
+        score: 4.3,
         about:
             'A cheeseburger is a hamburger topped with cheese. Traditionally, the slice of cheese is placed on top of the meat patty. The cheese is usually added to the cooking hamburger patty shortly before serving, which allows the cheese to melt.'),
+   
+   Product(
+        id: 'p5',
+        decs: 'No1. in Sales',
+        name: 'Chicken Cheese Burger',
+        imgUrl: 'https://i.hizliresim.com/fmg455u.png',
+        waitTime: '15min',
+       cal: '425',
+        price: 8,
+        score: 4.3,
+        about:
+            'A cheeseburger is a hamburger topped with cheese. Traditionally, the slice of cheese is placed on top of the meat patty. The cheese is usually added to the cooking hamburger patty shortly before serving, which allows the cheese to melt.'),
+   
+   
   ];
 
   // var _showFavoritesOnly = false;
+
+  final String authToken;
+  Products(this.authToken, this._items);
 
   List<Product> get items {
     // if (_showFavoritesOnly) {
@@ -117,4 +72,36 @@ class Products with ChangeNotifier {
   //   _showFavoritesOnly = false;
   //   notifyListeners();
   // }
+
+  Future<void> fetchAndSetProducts() async {
+    final url = 'https://flutter-update.firebaseio.com/products.json?auth=$authToken';
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+      final List<Product> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(Product(
+          id: prodId,
+          name: prodData['name'],
+          decs: prodData['decs'],
+          price: prodData['price'],
+          isFavorite: prodData['isFavorite'],
+          imgUrl: prodData['imgUrl'],
+          waitTime: prodData['waitTime'],
+          cal: prodData['cal'],
+          score: prodData['score'],
+         
+          about: prodData['about'],
+          
+        ));
+      });
+      _items = loadedProducts;
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
 }
