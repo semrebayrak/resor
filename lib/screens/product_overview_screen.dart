@@ -4,12 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:resorapp/screens/orders_screen.dart';
 import 'package:resorapp/widgets/customAppBar.dart';
 
-
 import '../widgets/products_grid.dart';
 import '../widgets/restaurant_info.dart';
-import '../widgets/badge.dart';
+
 import '../providers/cart.dart';
 import './cart_screen.dart';
+import '../providers/auth.dart';
 
 enum FilterOptions {
   Favorites,
@@ -77,7 +77,10 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           children: [
             CustomAppBar(
               Icons.arrow_back,
-              Icons.favorite,
+              Icons.logout,
+              rightCallback: () {
+                Provider.of<Auth>(context, listen: false).logout();
+              },
             ),
             RestaurantInfo(),
             FittedBox(
@@ -85,7 +88,6 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                     width: 400,
                     height: 670,
                     child: ProductsGrid(_showOnlyFavorites))),
-                    
           ],
         ),
       ),
@@ -122,7 +124,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
             },
           )),
       //sepet
-      
+
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(horizontal: 35),
         height: 75,
@@ -181,8 +183,6 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           ],
         ),
       ),
-
-      
     );
   }
 }

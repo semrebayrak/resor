@@ -5,8 +5,8 @@ import 'package:resorapp/widgets/detail_add_cart.dart';
 
 class FoodInformation extends StatelessWidget {
   const FoodInformation({
-    Key? key,
-    required this.loadedProduct,
+    Key key,
+    @required this.loadedProduct,
   }) : super(key: key);
 
   final Product loadedProduct;

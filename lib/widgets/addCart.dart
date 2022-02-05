@@ -5,7 +5,7 @@ import 'package:resorapp/providers/cart.dart';
 import 'package:resorapp/providers/product.dart';
 
 class AddtoCart extends StatelessWidget {
-  const AddtoCart({Key? key}) : super(key: key);
+  const AddtoCart({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

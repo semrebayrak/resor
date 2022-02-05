@@ -5,8 +5,8 @@ import 'package:resorapp/providers/product.dart';
 
 class AddCart extends StatelessWidget {
   const AddCart({
-    Key? key,
-    required this.loadedProduct,
+    Key key,
+     @required this.loadedProduct,
     
   }) : super(key: key);
 

@@ -15,17 +15,17 @@ class Product with ChangeNotifier {
 
   Product(
       {
-      required this.id,
-      required this.decs,
-      required this.name,
-      required this.imgUrl,
-      required this.waitTime,
-      required this.score,
-      required this.cal,
-      required this.price,
+      @required this.id,
+      @required this.decs,
+      @required this.name,
+      @required this.imgUrl,
+      @required this.waitTime,
+      @required this.score,
+      @required this.cal,
+      @required this.price,
       
       this.isFavorite = false,
-      required this.about,
+      @required this.about,
       });
 
   void toggleFavoriteStatus() {

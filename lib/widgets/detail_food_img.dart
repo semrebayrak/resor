@@ -4,8 +4,8 @@ import 'package:resorapp/providers/product.dart';
 
 class FoodImg extends StatelessWidget {
   const FoodImg({
-    Key? key,
-    required this.loadedProduct,
+    Key key,
+     @required this.loadedProduct,
   }) : super(key: key);
 
   final Product loadedProduct;

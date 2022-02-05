@@ -5,8 +5,8 @@ import 'package:resorapp/screens/orders_screen.dart';
 class CustomAppBar extends StatelessWidget {
   final IconData LeftIcon;
   final IconData RightIcon;
-  final Function? leftCallback;
-  final Function? rightCallback;
+  final Function leftCallback;
+  final Function rightCallback;
 
   CustomAppBar(this.LeftIcon, this.RightIcon,
       {this.leftCallback, this.rightCallback});
@@ -20,11 +20,11 @@ class CustomAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
-            onTap: leftCallback != null ? () => leftCallback!() : null,
+            onTap: leftCallback != null ? () => leftCallback() : null,
             child: _buildIcon(LeftIcon),
           ),
           GestureDetector(
-            onTap: rightCallback != null ? () => rightCallback!() : null,
+            onTap: rightCallback != null ? () => rightCallback() : null,
             child: _buildIcon(RightIcon),
           ),
         ],

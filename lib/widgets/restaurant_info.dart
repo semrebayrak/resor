@@ -3,7 +3,7 @@ import 'package:resorapp/constant/constant.dart';
 
 class RestaurantInfo extends StatelessWidget {
   const RestaurantInfo({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override

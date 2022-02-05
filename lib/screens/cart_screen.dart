@@ -18,10 +18,10 @@ class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
 
   const CartScreen({
-    Key? key,
+    Key key,
     this.tablenumber,
   }) : super(key: key);
-  final int? tablenumber;
+  final int tablenumber;
 
   @override
   Widget build(BuildContext context) {
