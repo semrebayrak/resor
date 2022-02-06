@@ -79,7 +79,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
               Icons.arrow_back,
               Icons.logout,
               rightCallback: () {
-                Provider.of<Auth>(context, listen: false).logout();
+             //   Provider.of<Auth>(context, listen: false).logout(); Edited
               },
             ),
             RestaurantInfo(),
@@ -146,7 +146,9 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.of(context).pushReplacementNamed('/');
+                MaterialPageRoute(
+                      builder: (context) => ProductOverviewScreen());
+                
               },
               icon: Icon(Icons.home),
               iconSize: 35,

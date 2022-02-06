@@ -9,12 +9,13 @@ class OrderItem {
   final double amount;
   final List<CartItem> products;
   final DateTime dateTime;
-
+  final int tableNo;
   OrderItem({
     @required this.id,
     @required this.amount,
     @required this.products,
     @required this.dateTime,
+    @required this.tableNo,
   });
 }
 
@@ -41,6 +42,7 @@ class Orders with ChangeNotifier {
       loadedOrders.add(
         OrderItem(
           id: orderId,
+          tableNo: orderData['tableNumber'],
           amount: orderData['amount'],
           dateTime: DateTime.parse(orderData['dateTime']),
           products: (orderData['products'] as List<dynamic>)
@@ -60,7 +62,7 @@ class Orders with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addOrder(List<CartItem> cartProducts, double total) async {
+  Future<void> addOrder(List<CartItem> cartProducts, double total, int tableNumber) async {
     final url =
         'https://flutter-update.firebaseio.com/orders/$userId.json?auth=$authToken';
     final timestamp = DateTime.now();

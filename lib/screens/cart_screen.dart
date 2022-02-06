@@ -37,7 +37,7 @@ class CartScreen extends StatelessWidget {
               onPressed: () {
                 {
                   Provider.of<Orders>(context, listen: false)
-                      .addOrder(cart.items.values.toList(), cart.totalAmount);
+                      .addOrder(cart.items.values.toList(), cart.totalAmount,tablenumber);
                   cart.clear();
                 }
               },
@@ -101,7 +101,7 @@ class CartScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(primary: kPrimaryColor),
                     onPressed: () {
                       Provider.of<Orders>(context, listen: false).addOrder(
-                          cart.items.values.toList(), cart.totalAmount);
+                          cart.items.values.toList(), cart.totalAmount, tablenumber);
                       cart.clear();
                       Navigator.push(
                           context,

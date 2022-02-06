@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:resorapp/constant/constant.dart';
 import 'package:resorapp/providers/product.dart';
 import 'package:resorapp/widgets/detail_add_cart.dart';
+import 'dart:developer' as dev;
 
 class FoodInformation extends StatelessWidget {
   const FoodInformation({
@@ -10,9 +11,10 @@ class FoodInformation extends StatelessWidget {
   }) : super(key: key);
 
   final Product loadedProduct;
-
+  
   @override
   Widget build(BuildContext context) {
+   
     return Container(
       color: kBackGround,
       child: Column(
@@ -31,11 +33,11 @@ class FoodInformation extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildIconText(Icons.access_time_filled_outlined, Colors.blue,
-                  loadedProduct.waitTime),
+                  loadedProduct.waitTime.toString()),
               _buildIconText(Icons.star_outline_outlined, Colors.amber,
                   loadedProduct.score.toString()),
               _buildIconText(Icons.local_fire_department_outlined, Colors.red,
-                  loadedProduct.cal),
+                  loadedProduct.cal.toString()),
             ],
           ),
           SizedBox(

@@ -6,7 +6,7 @@ class Product with ChangeNotifier {
   final String name;
   final String imgUrl;
   final String waitTime;
-  final num score;
+  final String score;
   final String cal;
   final double price;
   

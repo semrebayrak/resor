@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:resorapp/constant/constant.dart';
 import 'package:provider/provider.dart';
+import 'package:resorapp/screens/product_overview_screen.dart';
 import '../providers/auth.dart';
 import '../models/http_exception.dart';
 
@@ -84,13 +85,13 @@ class AuthCard extends StatefulWidget {
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
-  Map<String, String> _authData = {
+  final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
-
+  final _emailController = TextEditingController();
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -121,18 +122,26 @@ class _AuthCardState extends State<AuthCard> {
     try {
       if (_authMode == AuthMode.Login) {
         // Log user in
-        await Provider.of<Auth>(context, listen: false).login(
-          _authData['email'],
-          _authData['password'],
-        );
+        await Provider.of<Auth>(context, listen: false)
+            .login(
+          _emailController.text,
+          _passwordController.text,
+        )
+            .then((value) {
+          if (value == "Success") {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProductOverviewScreen()));
+          }
+        });
       } else {
         // Sign user up
-        await Provider.of<Auth>(context, listen: false).signup(
-          _authData['email'],
-          _authData['password'],
-        );
+        // await Provider.of<Auth>(context, listen: false).signup(
+        //   _authData['email'],
+        //   _authData['password'],
+        // );
       }
-     
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';
       if (error.toString().contains('EMAIL_EXISTS')) {
@@ -192,6 +201,7 @@ class _AuthCardState extends State<AuthCard> {
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-Mail'),
                   keyboardType: TextInputType.emailAddress,
+                  controller: _emailController,
                   validator: (value) {
                     if (value.isEmpty || !value.contains('@')) {
                       return 'Invalid email!';
@@ -237,7 +247,7 @@ class _AuthCardState extends State<AuthCard> {
                   RaisedButton(
                     child:
                         Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
-                    onPressed: _submit,
+                    onPressed: (_submit),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
