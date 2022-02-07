@@ -38,7 +38,7 @@ class Auth with ChangeNotifier {
       final jsonResponse = json.decode(response.body);
       _token = jsonResponse['token'];
       _userId = jsonResponse['id'];
-      dev.log(_token);
+     
       return "Success";
     } else {
       _token = null;
@@ -48,7 +48,7 @@ class Auth with ChangeNotifier {
 
   Future<String> signup(String email, String password) async {
     var header = {"Content-Type": "application/json"};
-    dev.log("sa");
+
     final response = await http.post(Uri.parse('$baseUrl/register'),
         headers: header,
         body: json.encode({
@@ -57,7 +57,7 @@ class Auth with ChangeNotifier {
           "email": email,
           "password": password
         }));
-    dev.log(response.statusCode.toString());
+   
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);
       _token = jsonResponse['token'];

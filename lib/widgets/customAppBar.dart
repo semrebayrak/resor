@@ -66,8 +66,11 @@ class BottomNavBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              MaterialPageRoute(
-                      builder: (context) => ProductOverviewScreen());
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductOverviewScreen(),
+                  ));
             },
             icon: Icon(Icons.home_outlined),
             iconSize: 35,

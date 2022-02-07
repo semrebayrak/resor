@@ -137,7 +137,7 @@ class _AuthCardState extends State<AuthCard> {
         });
       } else {
         // Sign user up
-        dev.log("hey");
+      
         await Provider.of<Auth>(context, listen: false)
             .signup(
           _authData['email'],

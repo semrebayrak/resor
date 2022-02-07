@@ -48,9 +48,11 @@ class Orders with ChangeNotifier {
       return;
     }
 
-    extractedData.forEach((orderData) {
+
       for (var item in extractedData) {
-        loadedOrders.add(OrderItem(
+        var data = _orders.where((data) => (data.id == item.id));
+          if (data.length == 0) {
+            loadedOrders.add(OrderItem(
           id: item['_id'],
           tableNo: item['tableNo'],
           amount: item['totalPrice'].toDouble(),
@@ -73,12 +75,12 @@ class Orders with ChangeNotifier {
               )
               .toList(),
         ));
+          }
       }
-    });
+    
 
     _orders = loadedOrders.reversed.toList();
-    dev.log(
-        "${_orders[0].products[0].food.name} + ${_orders[0].products[0].food.price.toString()}  ${_orders[0].products[0].quantity.toString()}");
+     dev.log(_orders.length.toString());
     notifyListeners();
   }
 
@@ -89,7 +91,7 @@ class Orders with ChangeNotifier {
       "x-access-token": authToken,
     };
     final url = baseUrl + '/api/users/$userId/orders';
-    dev.log(authToken);
+   
     String jsonList = cartProducts
         .map((cp) => {
               '"foodId"': '"${cp.id}"',
@@ -100,11 +102,11 @@ class Orders with ChangeNotifier {
     jsonList = replaceCharAt(jsonList, 0, '[');
     jsonList = replaceCharAt(jsonList, jsonList.length - 1, ']');
     jsonList = '{"tableNo": "${tableNumber}",' + '"items":' + jsonList + "}";
-    dev.log(jsonList);
+    
     final timestamp = DateTime.now();
     final response =
         await http.post(Uri.parse(url), headers: header, body: jsonList);
-    dev.log(response.statusCode.toString());
+   
     _orders.insert(
       0,
       OrderItem(

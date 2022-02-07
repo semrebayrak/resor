@@ -83,7 +83,7 @@ class Products with ChangeNotifier {
         return;
       }
       final List<Product> loadedProducts = [];
-      dev.log("sa");
+
       for (var item in extractedFoods['foods']) {
         var data = _items.where((data) => (data.id == item.id));
         if (data.length == 0)
