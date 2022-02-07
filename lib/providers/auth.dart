@@ -8,10 +8,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/http_exception.dart';
 
 class Auth with ChangeNotifier {
+  String _userId;
   String baseUrl = "https://resor.herokuapp.com";
   String _token;
   DateTime _expiryDate;
-  String _userId;
+
   Timer _authTimer;
 
   bool get isAuth {
@@ -19,12 +20,7 @@ class Auth with ChangeNotifier {
   }
 
   String get token {
-    if (_expiryDate != null &&
-        _expiryDate.isAfter(DateTime.now()) &&
-        _token != null) {
-      return _token;
-    }
-    return null;
+    return _token;
   }
 
   String get userId {
@@ -41,7 +37,7 @@ class Auth with ChangeNotifier {
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       _token = jsonResponse['token'];
-
+      _userId = jsonResponse['id'];
       return "Success";
     } else {
       _token = null;

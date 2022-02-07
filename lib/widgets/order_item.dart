@@ -49,14 +49,14 @@ class _OrderItemState extends State<OrderItem> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            prod.name,
+                            prod.food.name,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            '${prod.quantity}x \$${prod.price}',
+                            '${prod.quantity}x \$${prod.food.price}',
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.grey,

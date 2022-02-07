@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:resorapp/providers/product.dart';
 
 class CartItem {
   final String id;
   final String name;
   final int quantity;
   final double price;
+  final String tableNo;
+  final DateTime date;
+  final Product food;
 
   CartItem(
-      {@required this.id,
+      {@required this.food,
+     this.date,
+      @required this.id,
+      this.tableNo,
       @required this.name,
       @required this.quantity,
       @required this.price});
@@ -43,13 +50,8 @@ class Cart with ChangeNotifier {
               price: existingCartItem.price,
               quantity: existingCartItem.quantity + 1));
     } else {
-      _items.putIfAbsent(
-          productId,
-          () => CartItem(
-              id: DateTime.now().toString(),
-              name: name,
-              quantity: 1,
-              price: price));
+      _items.putIfAbsent(productId,
+          () => CartItem(id: productId, name: name, quantity: 1, price: price));
     }
     notifyListeners();
   }
@@ -58,7 +60,8 @@ class Cart with ChangeNotifier {
     _items.remove(productId);
     notifyListeners();
   }
-    void removeSingleItem(String productId) {
+
+  void removeSingleItem(String productId) {
     if (!_items.containsKey(productId)) {
       return;
     }

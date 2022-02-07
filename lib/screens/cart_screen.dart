@@ -100,8 +100,8 @@ class CartScreen extends StatelessWidget {
                     child: Text('ORDER'),
                     style: ElevatedButton.styleFrom(primary: kPrimaryColor),
                     onPressed: () {
-                      Provider.of<Orders>(context, listen: false).addOrder(
-                          cart.items.values.toList(), cart.totalAmount, tablenumber);
+                      // Provider.of<Orders>(context, listen: false).addOrder(
+                      //     cart.items.values.toList(), cart.totalAmount, tablenumber);
                       cart.clear();
                       Navigator.push(
                           context,

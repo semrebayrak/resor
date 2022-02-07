@@ -76,7 +76,7 @@ class Products with ChangeNotifier {
       //  var categoryUrl = url + categoryId + "/foods" + ;
 
       var foodsUrl = url + categoryId;
-      dev.log(foodsUrl);
+     
       final foodsResponse = await http.get(Uri.parse(foodsUrl));
       final extractedFoods = json.decode(foodsResponse.body);
 
@@ -97,7 +97,7 @@ class Products with ChangeNotifier {
           about: item['about'],
         ));
       }
-      dev.log(loadedProducts[0].id);
+      
       _items = loadedProducts;
       notifyListeners();
     } catch (error) {
