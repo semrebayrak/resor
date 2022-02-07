@@ -34,10 +34,35 @@ class Auth with ChangeNotifier {
         headers: header,
         body: json.encode({"email": email, "password": password}));
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);
       _token = jsonResponse['token'];
       _userId = jsonResponse['id'];
+      dev.log(_token);
+      return "Success";
+    } else {
+      _token = null;
+      throw Exception('Failed to load data!');
+    }
+  }
+
+  Future<String> signup(String email, String password) async {
+    var header = {"Content-Type": "application/json"};
+    dev.log("sa");
+    final response = await http.post(Uri.parse('$baseUrl/register'),
+        headers: header,
+        body: json.encode({
+          "firstName": " ",
+          "lastName": " ",
+          "email": email,
+          "password": password
+        }));
+    dev.log(response.statusCode.toString());
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse = json.decode(response.body);
+      _token = jsonResponse['token'];
+      _userId = jsonResponse['id'];
+      login(email, password);
       return "Success";
     } else {
       _token = null;

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:resorapp/constant/constant.dart';
 import 'package:resorapp/screens/orders_screen.dart';
 
+import '../screens/product_overview_screen.dart';
+
 class CustomAppBar extends StatelessWidget {
   final IconData LeftIcon;
   final IconData RightIcon;
@@ -64,7 +66,8 @@ class BottomNavBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/');
+              MaterialPageRoute(
+                      builder: (context) => ProductOverviewScreen());
             },
             icon: Icon(Icons.home_outlined),
             iconSize: 35,

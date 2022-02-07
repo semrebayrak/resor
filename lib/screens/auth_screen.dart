@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
-
+import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:resorapp/constant/constant.dart';
 import 'package:provider/provider.dart';
@@ -137,10 +137,20 @@ class _AuthCardState extends State<AuthCard> {
         });
       } else {
         // Sign user up
-        // await Provider.of<Auth>(context, listen: false).signup(
-        //   _authData['email'],
-        //   _authData['password'],
-        // );
+        dev.log("hey");
+        await Provider.of<Auth>(context, listen: false)
+            .signup(
+          _authData['email'],
+          _authData['password'],
+        )
+            .then((value) {
+          if (value == "Success") {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProductOverviewScreen()));
+          }
+        });
       }
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';

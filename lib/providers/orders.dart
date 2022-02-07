@@ -14,7 +14,7 @@ class OrderItem {
   final double amount;
   final List<CartItem> products;
   final DateTime dateTime;
-  final String tableNo;
+  final int tableNo;
   OrderItem({
     @required this.id,
     @required this.amount,
@@ -94,12 +94,12 @@ class Orders with ChangeNotifier {
         .map((cp) => {
               '"foodId"': '"${cp.id}"',
               '"quantity"': '"${cp.quantity}"',
-              '"tableNo"': '"$tableNumber"',
             })
         .toString();
 
     jsonList = replaceCharAt(jsonList, 0, '[');
     jsonList = replaceCharAt(jsonList, jsonList.length - 1, ']');
+    jsonList = '{"tableNo": "${tableNumber}",' + '"items":' + jsonList + "}";
     dev.log(jsonList);
     final timestamp = DateTime.now();
     final response =

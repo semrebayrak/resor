@@ -48,7 +48,6 @@ class Products with ChangeNotifier {
   List<Product> get items {
     fetchAndSetProducts();
 
-  
     return [..._items];
   }
 
@@ -76,7 +75,7 @@ class Products with ChangeNotifier {
       //  var categoryUrl = url + categoryId + "/foods" + ;
 
       var foodsUrl = url + categoryId;
-     
+
       final foodsResponse = await http.get(Uri.parse(foodsUrl));
       final extractedFoods = json.decode(foodsResponse.body);
 
@@ -84,20 +83,22 @@ class Products with ChangeNotifier {
         return;
       }
       final List<Product> loadedProducts = [];
-
+      dev.log("sa");
       for (var item in extractedFoods['foods']) {
-        loadedProducts.add(Product(
-          id: item['_id'],
-          name: item['title'],
-          price: item['price'].toDouble(),
-          imgUrl: item['imageUrl'],
-          waitTime: item['waitTime'].toString(),
-          cal: item['calories'].toString(),
-          score: item['description'],
-          about: item['about'],
-        ));
+        var data = _items.where((data) => (data.id == item.id));
+        if (data.length == 0)
+          loadedProducts.add(Product(
+            id: item['_id'],
+            name: item['title'],
+            price: item['price'].toDouble(),
+            imgUrl: item['imageUrl'],
+            waitTime: item['waitTime'].toString(),
+            cal: item['calories'].toString(),
+            score: item['description'],
+            about: item['about'],
+          ));
       }
-      
+
       _items = loadedProducts;
       notifyListeners();
     } catch (error) {
