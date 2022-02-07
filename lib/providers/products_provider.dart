@@ -85,7 +85,8 @@ class Products with ChangeNotifier {
       final List<Product> loadedProducts = [];
 
       for (var item in extractedFoods['foods']) {
-        
+        var data = _items.where((data) => (data.id == item.id));
+        if (data.length == 0) {
           loadedProducts.add(Product(
             id: item['_id'],
             name: item['title'],
@@ -96,6 +97,7 @@ class Products with ChangeNotifier {
             score: item['description'],
             about: item['about'],
           ));
+        }
       }
 
       _items = loadedProducts;
