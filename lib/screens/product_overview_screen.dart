@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:resorapp/constant/constant.dart';
 import 'package:provider/provider.dart';
+import 'package:resorapp/screens/auth_screen.dart';
 import 'package:resorapp/screens/orders_screen.dart';
 import 'package:resorapp/widgets/customAppBar.dart';
 
@@ -17,7 +18,7 @@ enum FilterOptions {
 }
 
 class ProductOverviewScreen extends StatefulWidget {
-    static const routeName = '/products';
+  static const routeName = '/products';
   @override
   State<ProductOverviewScreen> createState() => _ProductOverviewScreenState();
 }
@@ -76,13 +77,12 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CustomAppBar(
-              Icons.arrow_back,
-              Icons.logout,
-              rightCallback: () {
-             //   Provider.of<Auth>(context, listen: false).logout(); Edited
-              },
-            ),
+            CustomAppBar(Icons.arrow_back, Icons.logout, rightCallback: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AuthScreen()),
+              );
+            }),
             RestaurantInfo(),
             FittedBox(
                 child: Container(
@@ -147,16 +147,14 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           children: [
             IconButton(
               onPressed: () {
-                MaterialPageRoute(
-                      builder: (context) => ProductOverviewScreen());
-                
+                 Navigator.of(context).pushReplacementNamed(ProductOverviewScreen.routeName);
               },
               icon: Icon(Icons.home),
               iconSize: 35,
             ),
             IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(OrdersScreen.routeName);
+                  Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
                 },
                 icon: Icon(
                   Icons.payment,
@@ -176,11 +174,6 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
               icon: favs == 0
                   ? Icon(Icons.favorite_border_outlined)
                   : Icon(Icons.favorite),
-              iconSize: 35,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.person),
               iconSize: 35,
             ),
           ],

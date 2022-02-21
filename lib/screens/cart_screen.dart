@@ -1,5 +1,8 @@
+import 'dart:developer' as dev;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import 'package:resorapp/constant/constant.dart';
 import 'package:resorapp/screens/orders_screen.dart';
@@ -17,12 +20,16 @@ import '../widgets/selectTable.dart';
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
 
-  const CartScreen({
+  CartScreen({
     Key key,
     this.tablenumber,
-  }) : super(key: key);
+  }) : super(
+          key: key,
+        );
   final int tablenumber;
 
+  final _titleController = TextEditingController();
+  final _couponController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
@@ -35,16 +42,45 @@ class CartScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                {
-                  Provider.of<Orders>(context, listen: false)
-                      .addOrder(cart.items.values.toList(), cart.totalAmount,tablenumber);
-                  cart.clear();
-                }
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SingleChildScrollView(
+                        reverse: true,
+                        child: Container(
+                          color: kPrimaryColor,
+                          height: 150,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Form(
+                                  child: TextFormField(
+                                controller: _couponController,
+                                maxLines: 1,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                    hintText: "Enter your Coupon here",
+                                    filled: true,
+                                    fillColor: Colors.blue.shade100,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide.none,
+                                    )),
+                              )),
+                              ElevatedButton(
+                                  child: const Text('Apply Coupon'),
+                                  onPressed: () => Navigator.pop(context))
+                            ],
+                          ),
+                        ),
+                      );
+                    });
               },
               icon: Icon(
-                Icons.select_all_outlined,
+                (MdiIcons.fromString('sale')),
                 size: 35,
-              ))
+              )),
         ],
       ),
       body: Column(
@@ -62,6 +98,17 @@ class CartScreen extends StatelessWidget {
                 cart.items.values.toList()[i].quantity,
                 cart.items.values.toList()[i].name),
           )),
+          Card(
+            child: Form(
+              child: TextFormField(
+                keyboardType: TextInputType.text,
+                maxLines: 3,
+                decoration:
+                    InputDecoration.collapsed(hintText: "Enter your note here"),
+                controller: _titleController,
+              ),
+            ),
+          ),
           Card(
             child: Padding(
               padding: EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 8),
@@ -100,13 +147,21 @@ class CartScreen extends StatelessWidget {
                     child: Text('ORDER'),
                     style: ElevatedButton.styleFrom(primary: kPrimaryColor),
                     onPressed: () {
-                      Provider.of<Orders>(context, listen: false).addOrder(
-                          cart.items.values.toList(), cart.totalAmount, tablenumber);
+                      String note = _titleController.text;
+                      String coupon = _couponController.text;
+                      Provider.of<Orders>(context, listen: false)
+                          .addOrder(
+                            cart.items.values.toList(),
+                            cart.totalAmount,
+                            tablenumber,
+                            note,
+                          )
+                          .then((value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OrdersScreen())));
                       cart.clear();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => OrdersScreen()));
+                      dev.log(note);
                     },
                   ),
                 ],

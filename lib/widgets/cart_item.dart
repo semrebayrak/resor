@@ -9,7 +9,7 @@ class CartItem extends StatelessWidget {
   final int quantity;
   final String name;
 
-  CartItem(this.id,this.productId, this.price, this.quantity, this.name);
+  CartItem(this.id, this.productId, this.price, this.quantity, this.name);
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +45,12 @@ class CartItem extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(5),
                 child: FittedBox(
-                  child: Text('\$$price'),
+                  child: Text('\₺$price'),
                 ),
               ),
             ),
             title: Text(name),
-            subtitle: Text('Total: \$${(price * quantity)}'),
+            subtitle: Text('Total: \₺${(price * quantity)}'),
             trailing: Text('$quantity x'),
           ),
         ),

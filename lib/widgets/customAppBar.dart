@@ -65,32 +65,23 @@ class BottomNavBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductOverviewScreen(),
-                  ));
-            },
-            icon: Icon(Icons.home_outlined),
-            iconSize: 35,
-          ),
-          IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(OrdersScreen.routeName);
+                 Navigator.of(context).pushReplacementNamed(ProductOverviewScreen.routeName);
               },
-              icon: Icon(
-                Icons.payment_outlined,
-                size: 35,
-              )),
+              icon: Icon(Icons.home),
+              iconSize: 35,
+            ),
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
+                },
+                icon: Icon(
+                  Icons.payment,
+                  size: 35,
+                )),
           IconButton(
             onPressed: () {},
             icon: Icon(Icons.favorite_outline_outlined),
-            iconSize: 35,
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.person_outline_outlined),
             iconSize: 35,
           ),
         ],

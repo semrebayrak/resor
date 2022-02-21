@@ -63,7 +63,7 @@ class ProductItem extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '\$',
+                      '\₺',
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),

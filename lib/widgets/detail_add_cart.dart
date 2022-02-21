@@ -6,12 +6,10 @@ import 'package:resorapp/providers/product.dart';
 class AddCart extends StatelessWidget {
   const AddCart({
     Key key,
-     @required this.loadedProduct,
-    
+    @required this.loadedProduct,
   }) : super(key: key);
 
   final Product loadedProduct;
-  
 
   get kPrimaryColor => null;
 
@@ -37,14 +35,13 @@ class AddCart extends StatelessWidget {
                     width: 15,
                   ),
                   Text(
-                    '\$',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    '\₺',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     loadedProduct.price.toString(),
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-
                 ],
               ),
             ),
@@ -62,7 +59,7 @@ class AddCart extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                       cart.removeItem(loadedProduct.id);
+                      cart.removeItem(loadedProduct.id);
                     },
                     child: Text(
                       '-',
@@ -80,7 +77,6 @@ class AddCart extends StatelessWidget {
                     ),
                     child: Text(
                       '${Provider.of<Cart>(context).itemCount}',
-                      
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -103,7 +99,6 @@ class AddCart extends StatelessWidget {
               ),
             ),
           ),
-          
         ],
       ),
     );

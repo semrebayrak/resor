@@ -34,14 +34,16 @@ class MyApp extends StatelessWidget {
                create: (_) {},
           )
         ],
+
         child: Consumer<Auth>(
           builder: (ctx, auth, _) => MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'ResorApp',
             theme: ThemeData(
                 primaryColor: Colors.blue, accentColor: Colors.deepOrange),
-            home: auth.isAuth ? ProductOverviewScreen() : AuthScreen(),
+            home:  auth.isAuth ? ProductOverviewScreen() : AuthScreen(),
             routes: {
+              ProductOverviewScreen.routeName: (ctx) => ProductOverviewScreen(),
               ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
               CartScreen.routeName: (ctx) => CartScreen(),
               OrdersScreen.routeName: (ctx) => OrdersScreen(),
@@ -50,3 +52,4 @@ class MyApp extends StatelessWidget {
         ));
   }
 }
+

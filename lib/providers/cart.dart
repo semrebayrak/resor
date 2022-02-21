@@ -10,15 +10,17 @@ class CartItem {
   final String tableNo;
   final DateTime date;
   final Product food;
+  final String note;
 
   CartItem(
       {@required this.food,
-     this.date,
+      this.date,
       @required this.id,
       this.tableNo,
       @required this.name,
       @required this.quantity,
-      @required this.price});
+      @required this.price,
+      this.note});
 }
 
 class Cart with ChangeNotifier {

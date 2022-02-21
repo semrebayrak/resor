@@ -17,17 +17,15 @@ class OrdersScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         title: Text('Your Orders'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back_ios))
-        ],
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back_ios_new_outlined),
+        ),
       ),
       body: ListView.builder(
         itemBuilder: (context, i) => OrderItem(
-        
           orderData.orders[i],
         ),
         itemCount: orderData.orders.length,

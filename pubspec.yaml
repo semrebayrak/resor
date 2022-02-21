@@ -35,6 +35,7 @@ dependencies:
   numberpicker: ^2.1.1
   http: ^0.13.4
   shared_preferences: ^2.0.13
+  material_design_icons_flutter: ^5.0.6595
   
   
   

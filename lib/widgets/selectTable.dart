@@ -24,7 +24,7 @@ class _SelectTable extends State<SelectTable> {
           children: [
             NumberPicker(
               value: currentHorizontalIntValue,
-              minValue: 0,
+              minValue: 1,
               maxValue: 20,
               step: 1,
               itemHeight: 20,
@@ -58,18 +58,36 @@ class _SelectTable extends State<SelectTable> {
               ],
             ),
             ElevatedButton(
-                onPressed: () { 
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            CartScreen(tablenumber : currentHorizontalIntValue)), //veriyi yolla unutma!!
+                        builder: (context) => CartScreen(
+                            tablenumber:
+                                currentHorizontalIntValue)), //veriyi yolla unutma!!
                   );
                 },
                 child: Text('Select Table'))
           ],
         ),
       ),
+    );
+  }
+}
+
+
+class Coupon extends StatefulWidget {
+  
+
+  @override
+  _CouponState createState() => _CouponState();
+}
+
+class _CouponState extends State<Coupon> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      
     );
   }
 }

@@ -86,7 +86,7 @@ class Products with ChangeNotifier {
 
       for (var item in extractedFoods['foods']) {
         var data = _items.where((data) => (data.id == item.id));
-        if (data.length == 0) {
+        if (data.isEmpty) {
           loadedProducts.add(Product(
             id: item['_id'],
             name: item['title'],

@@ -15,12 +15,14 @@ class OrderItem {
   final List<CartItem> products;
   final DateTime dateTime;
   final int tableNo;
+  final String note;
   OrderItem({
     @required this.id,
     @required this.amount,
     @required this.products,
     @required this.dateTime,
     @required this.tableNo,
+    this.note,
   });
 }
 
@@ -41,6 +43,7 @@ class Orders with ChangeNotifier {
       "x-access-token": authToken,
     };
     final url = baseUrl + '/api/users/$userId/orders';
+    dev.log(url);
     final response = await http.get(Uri.parse(url), headers: header);
     final List<OrderItem> loadedOrders = [];
     final extractedData = json.decode(response.body);
@@ -48,50 +51,46 @@ class Orders with ChangeNotifier {
       return;
     }
 
-
-      for (var item in extractedData) {
-        var data = _orders.where((data) => (data.id == item.id));
-          if (data.length == 0) {
-            loadedOrders.add(OrderItem(
-          id: item['_id'],
-          tableNo: item['tableNo'],
-          amount: item['totalPrice'].toDouble(),
-          dateTime: DateTime.parse(item['createdAt']),
-          products: (item['items'] as List<dynamic>)
-              .map(
-                (item) => CartItem(
-                  quantity: item['quantity'],
-                  food: Product(
-                      id: item['food']["_id"],
-                      decs: "",
-                      name: item['food']["title"],
-                      imgUrl: item['food']["imageUrl"],
-                      waitTime: item['food']["waitTime"].toString(),
-                      score: item['food']["description"].toString(),
-                      cal: item['food']["calories"].toString(),
-                      price: item['food']["price"].toDouble(),
-                      about: item['food']["about"]),
-                ),
-              )
-              .toList(),
-        ));
-          }
-      }
-    
+    for (var item in extractedData) {
+      loadedOrders.add(OrderItem(
+        id: item['_id'],
+        tableNo: item['tableNo'],
+        note: item['note'],
+        amount: item['totalPrice'].toDouble(),
+        dateTime: DateTime.parse(item['createdAt']),
+        products: (item['items'] as List<dynamic>)
+            .map(
+              (item) => CartItem(
+                quantity: item['quantity'],
+                food: Product(
+                    id: item['food']["_id"],
+                    decs: "",
+                    name: item['food']["title"],
+                    imgUrl: item['food']["imageUrl"],
+                    waitTime: item['food']["waitTime"].toString(),
+                    score: item['food']["description"].toString(),
+                    cal: item['food']["calories"].toString(),
+                    price: item['food']["price"].toDouble(),
+                    about: item['food']["about"]),
+              ),
+            )
+            .toList(),
+      ));
+    }
 
     _orders = loadedOrders.reversed.toList();
-     dev.log(_orders.length.toString());
+    //dev.log(_orders.length.toString());
     notifyListeners();
   }
 
-  Future<void> addOrder(
-      List<CartItem> cartProducts, double total, int tableNumber) async {
+  Future<void> addOrder(List<CartItem> cartProducts, double total,
+      int tableNumber, String note) async {
     var header = {
       "Content-Type": "application/json",
       "x-access-token": authToken,
     };
     final url = baseUrl + '/api/users/$userId/orders';
-   
+
     String jsonList = cartProducts
         .map((cp) => {
               '"foodId"': '"${cp.id}"',
@@ -101,12 +100,14 @@ class Orders with ChangeNotifier {
 
     jsonList = replaceCharAt(jsonList, 0, '[');
     jsonList = replaceCharAt(jsonList, jsonList.length - 1, ']');
-    jsonList = '{"tableNo": "${tableNumber}",' + '"items":' + jsonList + "}";
-    
+    jsonList =
+        '{"note": "$note", "tableNo": "${tableNumber}",  "items": $jsonList}';
+    dev.log(jsonList);
+
     final timestamp = DateTime.now();
     final response =
         await http.post(Uri.parse(url), headers: header, body: jsonList);
-   
+
     _orders.insert(
       0,
       OrderItem(
