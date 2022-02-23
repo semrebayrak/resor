@@ -16,28 +16,34 @@ class OrderItem {
   final DateTime dateTime;
   final int tableNo;
   final String note;
-  OrderItem({
-    @required this.id,
-    @required this.amount,
-    @required this.products,
-    @required this.dateTime,
-    @required this.tableNo,
-    this.note,
-  });
+  final int voucher;
+
+  OrderItem(
+      {@required this.id,
+      @required this.amount,
+      @required this.products,
+      @required this.dateTime,
+      @required this.tableNo,
+      this.note,
+      this.voucher});
 }
 
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
   final String authToken;
   final String userId;
+  int _discount;
   Orders(this.authToken, this.userId, this._orders);
+
+  int get discount {
+    return _discount;
+  }
 
   List<OrderItem> get orders {
     fetchAndSetOrders();
     return [..._orders];
   }
-
-  Future<void> fetchAndSetOrders() async {
+Future<void> fetchAndSetOrders() async {
     var header = {
       "Content-Type": "application/json",
       "x-access-token": authToken,
@@ -84,7 +90,7 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> addOrder(List<CartItem> cartProducts, double total,
-      int tableNumber, String note) async {
+      int tableNumber, String note,String voucher) async {
     var header = {
       "Content-Type": "application/json",
       "x-access-token": authToken,
@@ -101,7 +107,7 @@ class Orders with ChangeNotifier {
     jsonList = replaceCharAt(jsonList, 0, '[');
     jsonList = replaceCharAt(jsonList, jsonList.length - 1, ']');
     jsonList =
-        '{"note": "$note", "tableNo": "${tableNumber}",  "items": $jsonList}';
+        '{"note": "$note","voucher": "$voucher", "tableNo": "${tableNumber}",  "items": $jsonList}';
     dev.log(jsonList);
 
     final timestamp = DateTime.now();
@@ -118,6 +124,25 @@ class Orders with ChangeNotifier {
       ),
     );
     notifyListeners();
+  }
+  
+  Future<void> voucherCoupon(String voucher) async {
+    int discountRate = 0;
+    var header = {
+      "Content-Type": "application/json",
+      "x-access-token": authToken,
+    };
+    final url = baseUrl + '/api/vouchers/$voucher';
+    dev.log(url);
+    final response = await http.get(Uri.parse(url), headers: header);
+    dev.log(response.toString());
+    final extractedCoupon = json.decode(response.body);
+    dev.log(extractedCoupon['discount'].toString());
+    if (extractedCoupon == null) {
+      return discountRate;
+    }
+
+    _discount = extractedCoupon['discount'];
   }
 
   String replaceCharAt(String oldString, int index, String newChar) {

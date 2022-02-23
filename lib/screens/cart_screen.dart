@@ -33,7 +33,9 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
-
+    final orders = Provider.of<Orders>(context);
+    double finalPrice;
+    String voucher;
     return Scaffold(
       backgroundColor: kBackGround,
       appBar: AppBar(
@@ -69,8 +71,23 @@ class CartScreen extends StatelessWidget {
                                     )),
                               )),
                               ElevatedButton(
-                                  child: const Text('Apply Coupon'),
-                                  onPressed: () => Navigator.pop(context))
+                                child: const Text('Apply Coupon'),
+                                onPressed: () {
+                                  voucher = _couponController.text;
+                                  Provider.of<Orders>(context, listen: false)
+                                      .voucherCoupon(voucher)
+                                      .then((value) {
+                                    dev.log(orders.discount.toString());
+                                    int rate = orders.discount;
+                                    double finalResult =
+                                        cart.calculateWithCoupon(rate);
+                                    finalPrice = finalResult;
+                                    dev.log(finalResult.toString());
+                                  });
+
+                                  Navigator.pop(context);
+                                },
+                              )
                             ],
                           ),
                         ),
@@ -124,7 +141,7 @@ class CartScreen extends StatelessWidget {
                   ),
                   Chip(
                       label: Text(
-                        '\$${cart.totalAmount}',
+                        '\₺${finalPrice ?? cart.totalAmount}',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -148,14 +165,10 @@ class CartScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(primary: kPrimaryColor),
                     onPressed: () {
                       String note = _titleController.text;
-                      String coupon = _couponController.text;
+
                       Provider.of<Orders>(context, listen: false)
-                          .addOrder(
-                            cart.items.values.toList(),
-                            cart.totalAmount,
-                            tablenumber,
-                            note,
-                          )
+                          .addOrder(cart.items.values.toList(),
+                              cart.totalAmount, tablenumber, note, voucher)
                           .then((value) => Navigator.push(
                               context,
                               MaterialPageRoute(
