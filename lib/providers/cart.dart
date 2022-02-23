@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:resorapp/providers/product.dart';
@@ -11,6 +13,7 @@ class CartItem {
   final DateTime date;
   final Product food;
   final String note;
+  final String voucher;
 
   CartItem(
       {@required this.food,
@@ -20,7 +23,8 @@ class CartItem {
       @required this.name,
       @required this.quantity,
       @required this.price,
-      this.note});
+      this.note,
+      this.voucher});
 }
 
 class Cart with ChangeNotifier {
@@ -40,6 +44,13 @@ class Cart with ChangeNotifier {
       total += carItem.price * carItem.quantity;
     });
     return total;
+  }
+
+  double calculateWithCoupon(int rate) {
+    double amount = totalAmount;
+    log(rate.toString() + "sa" + amount.toString());
+    amount = (100 - rate) * amount / 100;
+    return amount;
   }
 
   void addItem(String productId, double price, String name) {
@@ -86,4 +97,6 @@ class Cart with ChangeNotifier {
     _items = {};
     notifyListeners();
   }
+
+  void voucherCoupon() async {}
 }
